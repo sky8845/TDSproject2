@@ -1,59 +1,88 @@
+TDS Project 2 – LLM Analysis Quiz
 
+This project is part of the IITM BS Degree (Data Science) September 2025 term.
+The goal is to build an API that can receive a quiz task, open the given URL, extract the question, solve it, and submit the answer automatically.
 
-# TDS Project 2 – LLM Analysis Quiz
+The quiz pages are rendered using JavaScript, so a headless browser is required. I used Playwright for rendering and Flask for exposing the API endpoint.
 
-This project implements a Flask API endpoint for the LLM Analysis Quiz.
+The project handles:
 
-The server receives quiz tasks via a POST request, loads the quiz URL using Playwright (headless browser), processes the page, extracts any submit URL, and responds with the required JSON structure.  
-The code includes an `.env.example` file to show required environment variables.  
-The actual `.env` file is kept local and not committed for security reasons.
+Validating email and secret
 
-## How to run locally (Windows)
+Opening the quiz page using Playwright
 
-1. Create and activate virtual environment:
+Reading the question from the DOM
 
+Solving or returning a placeholder answer
 
-python -m venv venv
-venv\Scripts\activate
+Sending the answer back to the provided submit URL
 
+Handling multiple chained quiz URLs
 
-2. Install dependencies:
+Folder Structure
+TDSproject2/
+│── app.py
+│── requirements.txt
+│── .env.example
+│── .gitignore
+└── venv/
 
+How to Run the Project
+
+Create a .env file by copying .env.example and filling your actual secret and email.
+
+Install dependencies:
 
 pip install -r requirements.txt
-python -m playwright install
 
 
-3. Create a `.env` file by copying `.env.example`:
+Install Playwright:
+
+playwright install
 
 
-QUIZ_SECRET=YOUR_SECRET_HERE
-QUIZ_EMAIL=YOUR_EMAIL_HERE
-PORT=5000
-
-
-4. Start the Flask server:
-
+Start the Flask server:
 
 python app.py
 
 
-5. Start ngrok in another terminal:
-
+Start ngrok (to expose your local server):
 
 ngrok http 5000
 
 
-6. Use the HTTPS forwarding URL from ngrok as your API endpoint.
+Use the ngrok URL as your API endpoint in the Google Form.
 
-## Files Included
-- `app.py` – main server logic  
-- `requirements.txt` – dependencies  
-- `.env.example` – environment variable template  
-- `.gitignore` – ignores `.env` and venv  
-- `README.md` – project documentation  
-- `LICENSE` (MIT) – required by IITM  
+API Endpoint
 
-## Notes
-- `.env` is NOT committed to GitHub.  
-- The server responds with test values required for the demo quiz endpoint.
+Your endpoint will look like:
+
+https://<your-ngrok-url>/quiz-endpoint
+
+
+This endpoint accepts a POST request containing:
+
+email
+
+secret
+
+url (quiz URL)
+
+The API checks the secret and processes the task.
+
+Secret and Email
+
+The secret and email are loaded from the .env file.
+These must match the values you submit in the Google Form.
+
+Notes
+
+The final quiz evaluation will hit your ngrok URL between 3–4 PM on 29 Nov 2025.
+
+Keep the Flask server and ngrok running during evaluation.
+
+.env is intentionally not uploaded (it is ignored using .gitignore).
+
+License
+
+This project uses the MIT License.
